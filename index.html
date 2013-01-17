@@ -76,71 +76,72 @@
 
 <p>Getting more specific:</p>
 
-<pre><code>[
-    {"request": { 
-            "url": "/assets",
-            "method": "POST",
-            "params": {"mockity": "mocks you!"},
-            "response": {
-                "content-type": "text/html",
-                "status": 200,
-                "body": "&lt;html&gt;&lt;head&gt;&lt;title&gt;Mock You!&lt;/title&gt;&lt;/head&gt;&lt;body&gt;Geek says what?&lt;/body&gt;&lt;/html&gt;"
-            }
-        }
-    }
-]
-</code></pre>
+<div class="highlight"><pre><span class="p">[</span>
+  <span class="p">{</span><span class="s2">"request"</span><span class="o">:</span> <span class="p">{</span> 
+    <span class="s2">"url"</span><span class="o">:</span> <span class="s2">"/assets"</span><span class="p">,</span>
+    <span class="s2">"method"</span><span class="o">:</span> <span class="s2">"POST"</span><span class="p">,</span>
+    <span class="s2">"params"</span><span class="o">:</span> <span class="p">{</span><span class="s2">"mockity"</span><span class="o">:</span> <span class="s2">"mocks you!"</span><span class="p">},</span>
+    <span class="s2">"response"</span><span class="o">:</span> <span class="p">{</span>
+      <span class="s2">"content-type"</span><span class="o">:</span> <span class="s2">"text/html"</span><span class="p">,</span>
+      <span class="s2">"status"</span><span class="o">:</span> <span class="mi">200</span><span class="p">,</span>
+      <span class="s2">"body"</span><span class="o">:</span> <span class="s2">"&lt;html&gt;&lt;head&gt;&lt;title&gt;Mock You!&lt;/title&gt;&lt;/head&gt;&lt;body&gt;Geek says what?&lt;/body&gt;&lt;/html&gt;"</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">]</span>
+</pre></div>
 
 <p>Even more specific:</p>
 
-<pre><code>[
-    {"request": { 
-            "url": "/assets",
-            "method": "POST",
-            "params": {"mockity": "mocks you!"},
-            "headers": {"Accept": "*/*"},
-            "response": {
-                "content-type": "text/html",
-                "status": 200,
-                "body": "&lt;html&gt;&lt;head&gt;&lt;title&gt;Mock You!&lt;/title&gt;&lt;/head&gt;&lt;body&gt;You'll take anything?&lt;/body&gt;&lt;/html&gt;"
-            }
-        }
-    }
-]
-</code></pre>
+<div class="highlight"><pre><span class="p">[</span>
+  <span class="p">{</span><span class="s2">"request"</span><span class="o">:</span> <span class="p">{</span> 
+    <span class="s2">"url"</span><span class="o">:</span> <span class="s2">"/assets"</span><span class="p">,</span>
+    <span class="s2">"method"</span><span class="o">:</span> <span class="s2">"POST"</span><span class="p">,</span>
+    <span class="s2">"params"</span><span class="o">:</span> <span class="p">{</span><span class="s2">"mockity"</span><span class="o">:</span> <span class="s2">"mocks you!"</span><span class="p">},</span>
+    <span class="s2">"headers"</span><span class="o">:</span> <span class="p">{</span><span class="s2">"Accept"</span><span class="o">:</span> <span class="s2">"*/*"</span><span class="p">},</span>
+    <span class="s2">"response"</span><span class="o">:</span> <span class="p">{</span>
+      <span class="s2">"content-type"</span><span class="o">:</span> <span class="s2">"text/html"</span><span class="p">,</span>
+      <span class="s2">"status"</span><span class="o">:</span> <span class="mi">200</span><span class="p">,</span>
+      <span class="s2">"body"</span><span class="o">:</span> <span class="s2">"&lt;html&gt;&lt;head&gt;&lt;title&gt;Mock You!&lt;/title&gt;&lt;/head&gt;&lt;body&gt;You'll take anything?&lt;/body&gt;&lt;/html&gt;"</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">]</span>
+</pre></div>
 
 <p>Need to set a cookie?</p>
 
 <pre><code>...
-    "response": {
-        "cookies": {"cookie": "Yum Yum"}
-        ...
-    }
+"response": {
+    "cookies": {"cookie": "Yum Yum"}
+    ...
+}
 </code></pre>
 
 <p>Need to set a header?</p>
 
 <pre><code>...
-    "response": {
-        "headers": {"X-Mockity": ["Mocking you"]}
-        ...
-    }
+"response": {
+    "headers": {"X-Mockity": ["Mocking you"]}
+    ...
+}
 </code></pre>
 
 <p>Returning a file as a response body</p>
 
 <pre><code>...
-    "response": {
-        "body": "!file:/path/to/file"
-        ...
-    }
+"response": {
+    "body": "!file:/path/to/file"
+    ...
+}
 </code></pre>
 
 <h3>Directives - Where the real fun begins</h3>
 
 <p>Specify a slow response.  Response is written after the specified delay in ms.</p>
 
-<pre><code>"response": {
+<pre><code>...
+"response": {
     ...
     "!directive": {"delay": 1000}
 }
@@ -148,7 +149,8 @@
 
 <p>Specify a hung server.  It accepts connections but never responds. (Technically it will answer in about 10 years)</p>
 
-<pre><code>"response": {
+<pre><code>...
+"response": {
     ...
     "!directive": {"delay": -1}
 }
@@ -156,7 +158,8 @@
 
 <p>Specify a response that prematurely closes the connection.  Response headers and a random portion of the response body are output and the connection is closed.</p>
 
-<pre><code>"response": {
+<pre><code>...
+"response": {
     ...
     "!directive": {"partial": true}
 }
@@ -164,7 +167,8 @@
 
 <p>Specify a response that redirects recursively</p>
 
-<pre><code>"response": {
+<pre><code>...
+"response": {
     ...
     "!directive": {"loop": true}
 }
@@ -172,7 +176,8 @@
 
 <p>Specify a response that never terminates.  It just keeps outputing data forever.</p>
 
-<pre><code>"response": {
+<pre><code>...
+"response": {
     ...
     "!directive": {"firehose": true}
 }
@@ -180,7 +185,8 @@
 
 <p>Specify a response that works sometimes but not always.</p>
 
-<pre><code>"response": {
+<pre><code>...
+"response": {
     ...
     "!directive": {"flaky": true}
 }
