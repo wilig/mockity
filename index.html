@@ -1,0 +1,200 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Mockity by wilig</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <script src="javascripts/scale.fix.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1 class="header">Mockity</h1>
+        <p class="header">Mocking for those pesky external web services</p>
+
+        <ul>
+          <li class="download"><a class="buttons" href="https://github.com/wilig/mockity/zipball/master">Download ZIP</a></li>
+          <li class="download"><a class="buttons" href="https://github.com/wilig/mockity/tarball/master">Download TAR</a></li>
+          <li><a class="buttons github" href="https://github.com/wilig/mockity">View On GitHub</a></li>
+        </ul>
+
+        <p class="header">This project is maintained by <a class="header name" href="https://github.com/wilig">wilig</a></p>
+
+
+      </header>
+      <section>
+        <h3>Executive summary:</h3>
+
+<p>A little HTTP server that will respond to a specific request with whatever canned response you'd like.</p>
+
+<h3>The pitch:</h3>
+
+<ul>
+<li>Does your application make lots of calls to external services?<br>
+</li>
+<li>Ever need to test your application or service offline?<br>
+</li>
+<li>Want to see how your application responds to poor network conditions?</li>
+<li>Misconfigured or misbehaving services?</li>
+</ul><p>Mockity is a local stand-in web service that can simulate many of the real world problems that your application may face.</p>
+
+<h1>Use</h1>
+
+<pre><code>./mockity -conf=mockity.conf -port=8989
+</code></pre>
+
+<p>Just running mockity will use the defaults as listed.  All configuration is done via a simple JSON configuration file.</p>
+
+<h2>Examples</h2>
+
+<h3>Mocking services</h3>
+
+<p>Simple mocking:</p>
+
+<div class="highlight"><pre><span class="p">[</span>
+  <span class="p">{</span><span class="s2">"request"</span><span class="o">:</span> <span class="p">{</span> 
+    <span class="s2">"url"</span><span class="o">:</span> <span class="s2">"/assets"</span><span class="p">,</span>
+    <span class="s2">"method"</span><span class="o">:</span> <span class="s2">"GET"</span><span class="p">,</span>
+    <span class="s2">"response"</span><span class="o">:</span> <span class="p">{</span>
+      <span class="s2">"content-type"</span><span class="o">:</span> <span class="s2">"application/json"</span><span class="p">,</span>
+      <span class="s2">"status"</span><span class="o">:</span> <span class="mi">200</span><span class="p">,</span>
+      <span class="s2">"body"</span><span class="o">:</span> <span class="s2">"{\"success\": true}"</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">]</span>
+</pre></div>
+
+<p>How does it handle large response bodies you ask?  See "Returning a file as a response body" below.</p>
+
+<p>Getting more specific:</p>
+
+<pre><code>[
+    {"request": { 
+            "url": "/assets",
+            "method": "POST",
+            "params": {"mockity": "mocks you!"},
+            "response": {
+                "content-type": "text/html",
+                "status": 200,
+                "body": "&lt;html&gt;&lt;head&gt;&lt;title&gt;Mock You!&lt;/title&gt;&lt;/head&gt;&lt;body&gt;Geek says what?&lt;/body&gt;&lt;/html&gt;"
+            }
+        }
+    }
+]
+</code></pre>
+
+<p>Even more specific:</p>
+
+<pre><code>[
+    {"request": { 
+            "url": "/assets",
+            "method": "POST",
+            "params": {"mockity": "mocks you!"},
+            "headers": {"Accept": "*/*"},
+            "response": {
+                "content-type": "text/html",
+                "status": 200,
+                "body": "&lt;html&gt;&lt;head&gt;&lt;title&gt;Mock You!&lt;/title&gt;&lt;/head&gt;&lt;body&gt;You'll take anything?&lt;/body&gt;&lt;/html&gt;"
+            }
+        }
+    }
+]
+</code></pre>
+
+<p>Need to set a cookie?</p>
+
+<pre><code>...
+    "response": {
+        "cookies": {"cookie": "Yum Yum"}
+        ...
+    }
+</code></pre>
+
+<p>Need to set a header?</p>
+
+<pre><code>...
+    "response": {
+        "headers": {"X-Mockity": ["Mocking you"]}
+        ...
+    }
+</code></pre>
+
+<p>Returning a file as a response body</p>
+
+<pre><code>...
+    "response": {
+        "body": "!file:/path/to/file"
+        ...
+    }
+</code></pre>
+
+<h3>Directives - Where the real fun begins</h3>
+
+<p>Specify a slow response.  Response is written after the specified delay in ms.</p>
+
+<pre><code>"response": {
+    ...
+    "!directive": {"delay": 1000}
+}
+</code></pre>
+
+<p>Specify a hung server.  It accepts connections but never responds. (Technically it will answer in about 10 years)</p>
+
+<pre><code>"response": {
+    ...
+    "!directive": {"delay": -1}
+}
+</code></pre>
+
+<p>Specify a response that prematurely closes the connection.  Response headers and a random portion of the response body are output and the connection is closed.</p>
+
+<pre><code>"response": {
+    ...
+    "!directive": {"partial": true}
+}
+</code></pre>
+
+<p>Specify a response that redirects recursively</p>
+
+<pre><code>"response": {
+    ...
+    "!directive": {"loop": true}
+}
+</code></pre>
+
+<p>Specify a response that never terminates.  It just keeps outputing data forever.</p>
+
+<pre><code>"response": {
+    ...
+    "!directive": {"firehose": true}
+}
+</code></pre>
+
+<p>Specify a response that works sometimes but not always.</p>
+
+<pre><code>"response": {
+    ...
+    "!directive": {"flaky": true}
+}
+</code></pre>
+
+<h2>License</h2>
+
+<p>BSD licensed, see <a href="http://github.com/wilig/mockity">GitHub</a> for details. </p>
+      </section>
+      <footer>
+        <p><small>Hosted on <a href="https://pages.github.com">GitHub Pages</a> using the Dinky theme</small></p>
+      </footer>
+    </div>
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+		
+  </body>
+</html>
