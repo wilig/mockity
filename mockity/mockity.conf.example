@@ -1,0 +1,68 @@
+[
+	{
+		"url": "/mock",
+		"method": "GET",
+		"response": {
+			"content-type": "text/html",
+			"status": 200,
+			"body": "<html><head><title>Geek</title></head><body>Geek says \"Cool!\"</body></html>"
+		}
+	},
+	{
+		"url": "/slow",
+		"method": "GET",
+		"params": {"name": "mockity"},
+		"response": {
+			"headers": {},
+			"content-type": "application/json",
+			"status": 200,
+			"cookies": {"mockity": "is easy"},
+			"body": "{\"success\": true}",
+			"!directive": {"delay": 10000}
+		}
+	},
+	{
+		"url": "/partial",
+		"method": "GET",
+		"response": {
+			"headers": {},
+			"content-type": "application/json",
+			"status": 200,
+			"cookies": {"mockity": "is easy"},
+			"body": "{\"success\": true}",
+			"!directive": {"partial": true}
+		}
+	},
+	{
+		"url": "/hose",
+		"method": "POST",
+		"params": {"name": "mockity"},
+		"response": {
+			"headers": {},
+			"content-type": "text/plain",
+			"status": 200,
+			"!directive": {"firehose": true}
+		}
+	},
+	{
+		"url": "/flake",
+		"method": "GET",
+		"params": {"name": "mockity"},
+		"response": {
+			"headers": {"X-Flag": ["Flagged"]},
+			"content-type": "text/html",
+			"status": 200,
+			"body": "<html><head><title>Flaky Service</title></head><body>I'm pretty flaky</body></html>",
+			"!directive": {"flaky": true}
+		}
+	},
+	{
+		"url": "/loop",
+		"method": "GET",
+		"params": {"name": "mockity"},
+		"response": {
+			"!directive": {"loop": true}
+		}
+	}
+
+]
