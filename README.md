@@ -1,11 +1,11 @@
 # Mockity - For mocking out those pesky external services
 
-## Quick summary:
+### Quick summary:
 
 A little HTTP server that will respond to a specific request (see below) with
 whatever canned response you'd like.
 
-## The pitch:
+### The pitch:
 
 Does your application make lots of calls to external services?  Ever need to test your application or service without being connected to the network?  Ever want to test how your application responds to poor network conditions or poorly written services?
 
@@ -15,11 +15,11 @@ Some perliminary details:
 
 Configuration is done via a JSON configuration file.
 
-# Examples
+## Examples
 
-## Mocking services
+### Mocking services
 
-- Simple mocking:
+Simple mocking:
 
 	[
 		{"request": { 
@@ -36,7 +36,7 @@ Configuration is done via a JSON configuration file.
 
 How does it handle large response bodies you ask?  See "Returning a file as a response body" below.
 
-- Getting more specific:
+Getting more specific:
 
 	[
 		{"request": { 
@@ -52,7 +52,7 @@ How does it handle large response bodies you ask?  See "Returning a file as a re
 	  	}
 	]
 
-- Even more specific:
+Even more specific:
 
 	[
 		{"request": { 
@@ -69,7 +69,7 @@ How does it handle large response bodies you ask?  See "Returning a file as a re
 	  	}
 	]
 
-- Need to set a cookie?
+Need to set a cookie?
 
 	...
 		"response": {
@@ -77,7 +77,7 @@ How does it handle large response bodies you ask?  See "Returning a file as a re
 			...
 		}
 	
-- Need to set a header?
+Need to set a header?
 
 	...
 		"response": {
@@ -85,7 +85,7 @@ How does it handle large response bodies you ask?  See "Returning a file as a re
 			...
 		}
 
-- Returning a file as a response body
+Returning a file as a response body
 
 	...
 		"response": {
@@ -94,31 +94,31 @@ How does it handle large response bodies you ask?  See "Returning a file as a re
 		}
 
 
-## Directives - Where the real fun begins
+### Directives - Where the real fun begins
 
 
-- Specify a slow response.  Response is written after the specified delay in ms.
+Specify a slow response.  Response is written after the specified delay in ms.
 
 	"response": {
 		...
 		"!directive": {"delay": 1000}
 	}
 
-- Specify a hung server.  It accepts connections but never responds. (Technically it will answer in about 10 years)
+Specify a hung server.  It accepts connections but never responds. (Technically it will answer in about 10 years)
 
 	"response": {
 		...
 		"!directive": {"delay": -1}
 	}
 
-- Specify a response that prematurely closes the connection.  Response headers and a random portion of the response body are output and the connection is closed.
+Specify a response that prematurely closes the connection.  Response headers and a random portion of the response body are output and the connection is closed.
 
 	"response": {
 		...
 		"!directive": {"partial": true}
 	}
 
-- Specify a response that redirects recursively
+Specify a response that redirects recursively
 
 	"response": {
 		...
@@ -126,14 +126,14 @@ How does it handle large response bodies you ask?  See "Returning a file as a re
 	}
 
 
-- Specify a response that never terminates.  It just keeps outputing data forever.
+Specify a response that never terminates.  It just keeps outputing data forever.
 
 	"response": {
 		...
 		"!directive": {"firehose": true}
 	}
 
-- Specify a response that works sometimes but not always.
+Specify a response that works sometimes but not always.
 
 	"response": {
 		...
