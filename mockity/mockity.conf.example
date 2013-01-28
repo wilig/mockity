@@ -1,3 +1,6 @@
+// A quick example configuration file
+// 
+// Comments are now supported
 [
 	{
 		"url": "/mock",
@@ -5,7 +8,11 @@
 		"response": {
 			"content-type": "text/html",
 			"status": 200,
-			"body": "<html><head><title>Geek</title></head><body>Geek says \"Cool!\"</body></html>"
+			// String literals may now be multi-line
+			"body": "<html>
+					   <head><title>Geek</title></head>
+					   <body>Geek says \"Cool!\"</body>
+					 </html>"
 		}
 	},
 	{
@@ -52,7 +59,12 @@
 			"headers": {"X-Flag": ["Flagged"]},
 			"content-type": "text/html",
 			"status": 200,
-			"body": "<html><head><title>Flaky Service</title></head><body>I'm pretty flaky</body></html>",
+			"body": "<html>
+					   <head>
+						 <title>Flaky Service</title>
+					   </head>
+					   <body>I'm pretty flaky</body>
+					 </html>",
 			"!directive": {"flaky": true}
 		}
 	},
