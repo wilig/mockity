@@ -76,7 +76,7 @@ func (route Route) matches(r *http.Request) bool {
 	if route.URL != r.URL.Path {
 		return false
 	}
-	if route.Method != r.Method {
+	if route.Method != "" && route.Method != r.Method {
 		return false
 	}
 	for header, values := range route.Headers {

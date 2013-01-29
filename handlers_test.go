@@ -142,4 +142,17 @@ func TestRouteMatching(t *testing.T) {
 	if !route.matches(&r) {
 		t.Error("Failed to match on Request headers")
 	}
+	// Test route matching without method
+	// 
+	route = Route{URL: "/test"}
+	r = http.Request{URL: &url.URL{Path: "/test"}, Method: "GET", Header: headers}
+	if !route.matches(&r) {
+		t.Error("Failed to match without method")
+	}
+	route = Route{URL: "/test"}
+	r = http.Request{URL: &url.URL{Path: "/test"}, Method: "POST", Header: headers}
+	if !route.matches(&r) {
+		t.Error("Failed to match without method")
+	}
+
 }
