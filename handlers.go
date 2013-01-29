@@ -63,7 +63,9 @@ func MakeMockery(routes []Route) func(http.ResponseWriter, *http.Request) {
 				return
 			}
 		}
-		log.Printf("Unmatched: %s \"%s\"", r.Method, r.URL)
+		if r.URL.Path != "/favicon.ico" {
+			log.Printf("Unmatched: %s \"%s\"", r.Method, r.URL)
+		}
 		http.NotFound(w, r)
 	}
 }
